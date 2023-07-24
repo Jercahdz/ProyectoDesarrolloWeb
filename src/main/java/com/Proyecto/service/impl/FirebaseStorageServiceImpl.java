@@ -69,7 +69,7 @@ public class FirebaseStorageServiceImpl implements FirebaseStorageService {
         return tempFile;
     }
 
-    //Método utilitario para obtener un string con ceros....
+    //Método utilitario para obtener un string con ceros.....
     private String sacaNumero(long id) {
         return String.format("%019d", id);
     }
