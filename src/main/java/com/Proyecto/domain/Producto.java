@@ -25,4 +25,15 @@ public class Producto implements Serializable {
 
     public Producto() {
     }
+
+    public Producto(long idProducto, String descripcion, String detalle, double precio, int existencias, String rutaImagen, boolean activo) {
+        this.idProducto = idProducto;
+        this.descripcion = descripcion;
+        this.detalle = detalle;
+        this.precio = precio;
+        this.existencias = existencias;
+        this.rutaImagen = rutaImagen;
+        this.activo = activo;
+    }
+
 }

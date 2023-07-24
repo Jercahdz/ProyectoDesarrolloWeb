@@ -1,6 +1,8 @@
 package com.Proyecto.controller;
 
 import com.Proyecto.domain.Producto;
+import com.Proyecto.service.FirebaseStorageService;
+import com.Proyecto.service.ProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,13 +17,14 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProductoController {
 
     @Autowired
-    private Producto producto;
+    private ProductoService productoService;
 
     @GetMapping("/listado")
     public String listado(Model model) {
-        var productos = producto.getProductos(false);
+        var productos = productoService.getProductos(false);
         model.addAttribute("productos", productos);
-        model.addAttribute("totalProductos", productos.size());
+        model.addAttribute("totalProductos",
+                productos.size());
         return "/producto/listado";
     }
 
@@ -30,31 +33,35 @@ public class ProductoController {
         return "/producto/modifica";
     }
 
+    @Autowired
+    private FirebaseStorageService firebaseStorageService;
+
     @PostMapping("/guardar")
     public String productoGuardar(Producto producto,
             @RequestParam("imagenFile") MultipartFile imagenFile) {
         if (!imagenFile.isEmpty()) {
-            producto.save(producto);
+            productoService.save(producto);
             producto.setRutaImagen(
-                    producto.cargaImagen(
+                    firebaseStorageService.cargaImagen(
                             imagenFile,
                             "producto",
                             producto.getIdProducto()));
         }
-        producto.save(producto);
+        productoService.save(producto);
         return "redirect:/producto/listado";
     }
 
     @GetMapping("/eliminar/{idProducto}")
     public String productoEliminar(Producto producto) {
-        producto.delete(producto);
+        productoService.delete(producto);
         return "redirect:/producto/listado";
     }
 
     @GetMapping("/modificar/{idProducto}")
     public String productoModificar(Producto producto, Model model) {
-        producto = producto.getProducto(producto);
+        producto = productoService.getProducto(producto);
         model.addAttribute("producto", producto);
         return "/producto/modifica";
     }
+
 }
