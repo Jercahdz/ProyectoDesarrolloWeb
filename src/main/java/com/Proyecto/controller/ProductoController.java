@@ -15,17 +15,11 @@ import org.springframework.web.multipart.MultipartFile;
 public class ProductoController {
 
     @Autowired
-    private Proyectodesarrolloweb proyectodesarrolloweb;
-    
-    @Autowired
-    private CategoriaService categoriaService;
+    private Producto producto;
 
     @GetMapping("/listado")
     public String listado(Model model) {
-        var categorias = categoriaService.getCategorias(false);
-        model.addAttribute("categorias", categorias);
-
-        var productos = proyectodesarrolloweb.getProductos(false);
+        var productos = producto.getProductos(false);
         model.addAttribute("productos", productos);
         model.addAttribute("totalProductos", productos.size());
         return "/producto/listado";
@@ -36,36 +30,30 @@ public class ProductoController {
         return "/producto/modifica";
     }
 
-    @Autowired
-    private Proyectodesarrolloweb proyectodesarrolloweb;
-
     @PostMapping("/guardar")
     public String productoGuardar(Producto producto,
             @RequestParam("imagenFile") MultipartFile imagenFile) {
         if (!imagenFile.isEmpty()) {
-            proyectodesarrolloweb.save(producto);
+            producto.save(producto);
             producto.setRutaImagen(
-                    proyectodesarrolloweb.cargaImagen(
+                    producto.cargaImagen(
                             imagenFile,
                             "producto",
                             producto.getIdProducto()));
         }
-        proyectodesarrolloweb.save(producto);
+        producto.save(producto);
         return "redirect:/producto/listado";
     }
 
     @GetMapping("/eliminar/{idProducto}")
     public String productoEliminar(Producto producto) {
-        proyectodesarrolloweb.delete(producto);
+        producto.delete(producto);
         return "redirect:/producto/listado";
     }
 
     @GetMapping("/modificar/{idProducto}")
     public String productoModificar(Producto producto, Model model) {
-        var categorias = categoriaService.getCategorias(false);
-        model.addAttribute("categorias", categorias);
-        
-        producto = proyectodesarrolloweb.getProducto(producto);
+        producto = producto.getProducto(producto);
         model.addAttribute("producto", producto);
         return "/producto/modifica";
     }
