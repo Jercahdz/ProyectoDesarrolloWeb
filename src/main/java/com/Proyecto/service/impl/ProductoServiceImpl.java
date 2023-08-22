@@ -1,6 +1,5 @@
 package com.Proyecto.service.impl;
 
-
 import com.Proyecto.dao.ProductoDao;
 import com.Proyecto.domain.Producto;
 import com.Proyecto.service.ProductoService;
@@ -12,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ProductoServiceImpl implements ProductoService {
 
-    //La anotacion Autowired crea un unico objeto mientras se ejecuta el app
+    //La anotacion autowired crea un unico objeto sin hacer new.
     @Autowired
     private ProductoDao productoDao;
 
@@ -20,7 +19,7 @@ public class ProductoServiceImpl implements ProductoService {
     @Transactional(readOnly = true)
     public List<Producto> getProductos(boolean activos) {
         var lista = productoDao.findAll();
-        if (activos) { //Se deben eliminar los que no estan activos...
+        if (activos) {
             lista.removeIf(e -> !e.isActivo());
         }
         return lista;
@@ -43,4 +42,26 @@ public class ProductoServiceImpl implements ProductoService {
     public void delete(Producto producto) {
         productoDao.delete(producto);
     }
+    
+    //Se implementa el método para recuperar los productos con una consulta ampliada
+    @Override
+    @Transactional(readOnly = true)
+    public List<Producto>buscaProductosPorPrecioEntre(double precioInf, double precioSup) {
+        return productoDao.findByPrecioBetweenOrderByDescripcion(precioInf, precioSup);
+    }
+    
+    //Se implementa el método para recuperar los productos con una consulta JPQL
+    @Override
+    @Transactional(readOnly = true)
+    public List<Producto>consultaJPQL(double precioInf, double precioSup) {
+        return productoDao.consultaJPQL(precioInf, precioSup);
+    }
+    
+    //Se implementa el método para recuperar los productos con una consulta SQL
+    @Override
+    @Transactional(readOnly = true)
+    public List<Producto>consultaSQL(double precioInf, double precioSup) {
+        return productoDao.consultaSQL(precioInf, precioSup);
+    }
+    
 }
