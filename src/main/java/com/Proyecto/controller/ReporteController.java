@@ -23,44 +23,35 @@ public class ReporteController {
         return "/reportes/principal";
     }
 
-    @GetMapping("/usuarios")
+    @GetMapping("/usuario")
     public ResponseEntity<Resource>
-            usuarios(@RequestParam String tipo) throws IOException {
-        return reporteService.generarReporte("usuarios",
+            usuario(@RequestParam String tipo) throws IOException {
+        return reporteService.generarReporte("usuario",
                 null,
                 tipo);
     }
 
-    @GetMapping("/ventas")
+    @GetMapping("/venta")
     public ResponseEntity<Resource>
-            ventas(@RequestParam String tipo) throws IOException {
-        return reporteService.generarReporte("ventas",
+            venta(@RequestParam String tipo) throws IOException {
+        return reporteService.generarReporte("venta",
                 null,
                 tipo);
     }
 
-    @GetMapping("/Categoria")
+    @GetMapping("/categoriak")
     public ResponseEntity<Resource>
-            categoria(@RequestParam String tipo) throws IOException {
-        return reporteService.generarReporte("Categoria",
+            categoriak(@RequestParam String tipo) throws IOException {
+        return reporteService.generarReporte("categoriak",
                 null,
                 tipo);
     }
 
-    @GetMapping("/productos")
+    @GetMapping("/producto")
     public ResponseEntity<Resource>
-            productos(@RequestParam String tipo) throws IOException {
-        return reporteService.generarReporte("productos",
+            producto(@RequestParam String tipo) throws IOException {
+        return reporteService.generarReporte("producto",
                 null,
-                tipo);
-    }
-            
-            @GetMapping("/roles")
-    public ResponseEntity<Resource> 
-        roles(@RequestParam String tipo) throws IOException {
-        return reporteService.generarReporte(
-                "roles", 
-                null, 
                 tipo);
     }
 
